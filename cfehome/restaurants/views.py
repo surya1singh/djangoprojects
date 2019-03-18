@@ -45,8 +45,7 @@ def about(request):
     }
     return render(request, "about.html", context)
 
-
-def contact(request):
-    context = {
-    }
-    return render(request, "contact.html", context)
+class ContactView(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        return render(request, "contact.html", context)

@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from restaurants.views import home, home_function, home_base, about, contact
+from restaurants.views import home, home_function, home_base, about, ContactView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^home_base$', home_base),
     url(r'^$', home),
     url(r'^about/$', about),
-    url(r'^contact/$', contact),
+    url(r'^contact/$', ContactView.as_view()),
 ]
