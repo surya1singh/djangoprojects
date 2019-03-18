@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
 import random
+from .models import RestaurantLocation
 
 # Create your views here.
 def home_function(request):
@@ -56,3 +57,11 @@ class HomeView(TemplateView):
             "some_list": some_list
         }
         return context
+
+def restaurant_listview(request):
+    template_name = 'restaurants/restaurants_list.html'
+    queryset = RestaurantLocation.objects.all()
+    context = {
+        "object_list": queryset
+    }
+    return render(request, template_name, context)
