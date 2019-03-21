@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
+from django.contrib.auth.views import LoginView
+
 from restaurants.views import (
      HomeView, home_function, home_base, about, ContactView,
      restaurant_listview, RestaurantListView, RestaurantDetailView,
@@ -29,6 +31,7 @@ urlpatterns = [
     url(r'^home_function$', home_function), # function based view
     url(r'^home_base$', home_base),
     url(r'^$', HomeView.as_view()),
+    url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^about/$', TemplateView.as_view(template_name='about.html')),
     url(r'^contact/$', ContactView.as_view()),
     url(r'^restaurants_listview/$', restaurant_listview),

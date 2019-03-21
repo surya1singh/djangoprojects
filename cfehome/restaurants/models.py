@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save, post_save
 
 from .utils import unique_slug_generator
 from .validators import validate_category
+
 User = settings.AUTH_USER_MODEL
 
 class RestaurantLocation(models.Model):
