@@ -1,10 +1,13 @@
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import pre_save, post_save
 
 from .utils import unique_slug_generator
 from .validators import validate_category
+User = settings.AUTH_USER_MODEL
 
 class RestaurantLocation(models.Model):
+    owner           = models.ForeignKey(User) # class_instance.model_set.all() # Django Models Unleashed JOINCFE.com
     name            = models.CharField(max_length=120)
     location        = models.CharField(max_length=120, null=True, blank=True)
     category        = models.CharField(max_length=120, null=True, blank=True,
