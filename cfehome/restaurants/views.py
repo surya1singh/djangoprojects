@@ -86,7 +86,7 @@ class RestaurantDetailView(DetailView):
     queryset = RestaurantLocation.objects.all()
 
 
-def restaurant_createview(request):
+def restaurant_createview_wrong_way(request):
     # if request.method == "GET":
     #     print("get data")
     if request.method == "POST":
@@ -100,6 +100,24 @@ def restaurant_createview(request):
 
             )
         return HttpResponseRedirect("/restaurants/")
-    template_name = 'restaurants/form.html'
+    template_name = 'restaurants/form_wrong_way.html'
     context = {}
+    return render(request, template_name, context)
+
+def restaurant_createview(request):
+    form = RestaurantCreateForm(request.POST or None)
+    errors = None
+    if form.is_valid():
+        obj = RestaurantLocation.objects.create(
+                name = form.cleaned_data.get('name'),
+                location= form.cleaned_data.get('location'),
+                category = form.cleaned_data.get('category')
+
+            )
+        return HttpResponseRedirect("/restaurants/")
+    if form.errors:
+        errors = form.errors
+
+    template_name = 'restaurants/form.html'
+    context = {"form": form, "errors": errors}
     return render(request, template_name, context)
