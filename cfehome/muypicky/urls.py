@@ -19,7 +19,8 @@ from django.views.generic import TemplateView
 
 from restaurants.views import (
      HomeView, home_function, home_base, about, ContactView,
-     restaurant_listview, RestaurantListView, RestaurantDetailView
+     restaurant_listview, RestaurantListView, RestaurantDetailView,
+     restaurant_createview
      )
 
 urlpatterns = [
@@ -31,5 +32,7 @@ urlpatterns = [
     url(r'^contact/$', ContactView.as_view()),
     url(r'^restaurants_listview/$', restaurant_listview),
     url(r'^restaurants/$', RestaurantListView.as_view()),
+    url(r'^restaurants/create/$', restaurant_createview),
     url(r'^restaurants/(?P<slug>[\w-]+)/$', RestaurantDetailView.as_view()),
+
 ]
