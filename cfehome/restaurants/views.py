@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -104,17 +106,24 @@ def restaurant_createview_wrong_way(request):
     context = {}
     return render(request, template_name, context)
 
+@login_required()
 def restaurant_createview(request):
     form = RestaurantCreateForm(request.POST or None)
     errors = None
     if form.is_valid():
-        #form.save()
-        obj = RestaurantLocation.objects.create(
-                name = form.cleaned_data.get('name'),
-                location= form.cleaned_data.get('location'),
-                category = form.cleaned_data.get('category')
-
-            )
+        if request.user.is_authenticated():
+            instance = form.save(commit=False)
+            instance.owner = request.user
+            instance.save()
+            return HttpResponseRedirect("/restaurants/")
+        else:
+            return HttpResponseRedirect("/login/")
+#        obj = RestaurantLocation.objects.create(
+#                name = form.cleaned_data.get('name'),
+#                location= form.cleaned_data.get('location'),
+#                category = form.cleaned_data.get('category')
+#
+#            )
         return HttpResponseRedirect("/restaurants/")
     if form.errors:
         errors = form.errors
@@ -124,7 +133,13 @@ def restaurant_createview(request):
     return render(request, template_name, context)
 
 
-class RestaurantCreateView(CreateView):
+class RestaurantCreateView(LoginRequiredMixin, CreateView):
     form_class = RestaurantLocationCreateForm
+#    login_url = '/login/'
     template_name = 'restaurants/form.html'
     success_url = "/restaurants/"
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.owner = self.request.user
+        return super(RestaurantCreateView, self).form_valid(form)
