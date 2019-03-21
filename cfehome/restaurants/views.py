@@ -119,7 +119,7 @@ def restaurant_createview(request):
     if form.errors:
         errors = form.errors
 
-    template_name = 'restaurants/form.html'
+    template_name = 'restaurants/form_function.html'
     context = {"form": form, "errors": errors}
     return render(request, template_name, context)
 
